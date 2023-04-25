@@ -16,20 +16,20 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    * @openapi
    * /v1/:ref/isWorkday/:date:
    *   get:
-   *     description: returns if the given date is a workday or not
+   *     description: Returns whether the given date is a workday or not
    *     parameters:
    *        - in: path
    *          name: :ref
    *          schema:
    *              type: string
    *          required: true
-   *          description: ref of the config
+   *          description: Ref of the config
    *        - in: path
    *          name: :date
    *          schema:
    *              type: string
    *          required: true
-   *          description: date to check
+   *          description: Date to check
    *     responses:
    *       200:
    *         content:
@@ -37,13 +37,13 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *                schema:
    *                    type: object
    *                    properties:
-   *                      success:
+   *                      status:
    *                        type: string
-   *                        description: if the call was successful or not
+   *                        description: Whether the call was successful or not
    *                        example: "SUCCESS"
    *                      result:
    *                        type: boolean
-   *                        description: true if it is a workday, false if not
+   *                        description: True if it is a workday, false if not
    */
   app.get('/v1/:ref/isWorkday/:date', async (req, res, next): Promise<void> => {
     try {
@@ -62,26 +62,26 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    * @openapi
    * /v1/:ref/addWorkdays/:date/:add:
    *   get:
-   *     description: returns the date after the given number of workdays have passed
+   *     description: Returns the date after the given number of workdays have passed
    *     parameters:
    *        - in: path
    *          name: :ref
    *          schema:
    *              type: string
    *          required: true
-   *          description: ref of the config
+   *          description: Ref of the config
    *        - in: path
    *          name: :date
    *          schema:
    *              type: string
    *          required: true
-   *          description: date to start from
+   *          description: Date to start from
    *        - in: path
    *          name: :add
    *          schema:
    *              type: number
    *          required: true
-   *          description: amount of days to add
+   *          description: Amount of days to add
    *     responses:
    *       200:
    *         content:
@@ -89,13 +89,13 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *                schema:
    *                    type: object
    *                    properties:
-   *                      success:
+   *                      status:
    *                        type: string
-   *                        description: if the call was successful or not
+   *                        description: Whether the call was successful or not
    *                        example: "SUCCESS"
    *                      result:
    *                        type: string
-   *                        description: the date of the workday after the given days
+   *                        description: The date of the workday after the given number of days
    *                        example: "2022-02-02"
    */
   app.get('/v1/:ref/addWorkdays/:date/:add', async (req, res, next): Promise<void> => {
@@ -115,14 +115,14 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    * @openapi
    * /v1/:ref/config:
    *   get:
-   *       description: returns the config for the given ref
+   *       description: Returns the config for the given ref
    *       parameters:
    *          - in: path
    *            name: :ref
    *            schema:
    *                type: string
    *            required: true
-   *            description: ref of the config
+   *            description: Ref of the config
    *       responses:
    *         200:
    *           content:
@@ -130,35 +130,36 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *               schema:
    *                 type: object
    *                 properties:
-   *                   success:
+   *                   status:
    *                     type: string
-   *                     description: if the call was successful or not
+   *                     description: If the call was successful or not
    *                     example: "SUCCESS"
    *                   result:
    *                     type: object
    *                     properties:
    *                       zone:
    *                         type: string
-   *                         description: zone for the configuration
+   *                         description: Zone for the configuration
    *                       workdays:
    *                         type: array
-   *                         description: the days that are worked
+   *                         description: The days that are worked in a week.
    *                         items:
    *                           type: string
+   *                         example: [1,2,3,4,5]
    *                       numberOfYears:
    *                         type: number
-   *                         description: the number of years that the cache should be generated for
+   *                         description: The number of years that the cache should be generated for
    *                         items:
    *                           type: number
    *                       exclude:
    *                         type: array
-   *                         description: the extra days to exclude
+   *                         description: The extra days to exclude
    *                         items:
    *                           type: string
    *                           example: 2022-02-02
    *                       excludeHolidays:
    *                         type: array
-   *                         description: holidays that are not applicable for this configuration
+   *                         description: Holidays that are not applicable for this configuration
    *                         items:
    *                           type: string
    *                           example: koningsdag
@@ -180,14 +181,14 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    * @openapi
    * /v1/:ref/config:
    *   put:
-   *     description: update the config for the given ref
+   *     description: Update the config for the given ref
    *     parameters:
    *        - in: path
    *          name: :ref
    *          schema:
    *              type: string
    *          required: true
-   *          description: ref of the config
+   *          description: Ref of the config
    *     requestBody:
    *       required: true
    *       content:
@@ -197,25 +198,25 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *               properties:
    *                   zone:
    *                     type: string
-   *                     description: zone for the configuration
+   *                     description: Zone for the configuration
    *                   workdays:
    *                     type: array
-   *                     description: the days that are worked
+   *                     description: The days that are worked
    *                     items:
    *                       type: string
    *                   numberOfYears:
    *                     type: number
-   *                     description: the number of years that the cache should be generated for
+   *                     description: The number of years that the cache should be generated for
    *                     items:
    *                       type: number
    *                   exclude:
    *                     type: array
-   *                     description: the extra days to exclude
+   *                     description: The extra days to exclude
    *                     items:
    *                       type: string
    *                   excludeHolidays:
    *                     type: array
-   *                     description: holidays that are not applicable for this configuration
+   *                     description: Holidays that are not applicable for this configuration
    *                     items:
    *                       type: string
    *     responses:
@@ -225,9 +226,9 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *             schema:
    *               type: object
    *               properties:
-   *                 success:
+   *                 status:
    *                   type: string
-   *                   description: if the call was successful or not
+   *                   description: Whether the call was successful or not
    *                   example: "SUCCESS"
    */
   app.put('/v1/:ref/config', async (req, res, next): Promise<void> => {
@@ -252,14 +253,14 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    * @openapi
    * /v1/holidays/:zone:
    *   get:
-   *       description: returns a list of holidays for a given zone
+   *       description: Returns a list of holidays for a given zone
    *       parameters:
    *          - in: path
    *            name: :zone
    *            schema:
    *                type: string
    *            required: true
-   *            description: zone to get the holidays from
+   *            description: Zone to get the holidays from
    *       responses:
    *         200:
    *           content:
@@ -267,13 +268,13 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *               schema:
    *                 type: object
    *                 properties:
-   *                   success:
+   *                   status:
    *                     type: string
-   *                     description: if the call was successful or not
+   *                     description: If the call was successful or not
    *                     example: "SUCCESS"
    *                   result:
    *                     type: array
-   *                     description: the holidays
+   *                     description: The holidays
    *                     items:
    *                        type: string
    */

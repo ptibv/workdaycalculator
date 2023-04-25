@@ -35,7 +35,7 @@ class Workdays {
   }
 
   /**
-   * Tells if a givne date is a workday
+   * Tells if a given date is a workday
    *
    * @param ref string
    * @param date Date
@@ -69,7 +69,7 @@ class Workdays {
   }
 
   /**
-   * Flushes the workdays currently in memory such that we can lay load them again from the
+   * Flushes the workdays currently in memory such that we can lazyload them again from the
    * disk cache
    *
    * @param ref string

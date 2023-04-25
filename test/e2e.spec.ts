@@ -187,11 +187,11 @@ describe('e2e', () => {
 
     it('should return true for 2020-01-02', async () => {
       const response = await request(app)
-        .get('/v1/nl/isWorkday/2020-01-01')
+        .get('/v1/nl/isWorkday/2020-01-02')
         .send();
 
       expect(response.body.status).toEqual('SUCCESS');
-      expect(response.body.result).toEqual(false);
+      expect(response.body.result).toEqual(true);
     });
   });
 

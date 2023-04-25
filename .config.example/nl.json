@@ -1,12 +1,13 @@
 {
-    "zone": "nl",
-    "workdays": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "maxDate": "2050-12-31",
-    "exclude": []
-  }
+  "zone": "nl",
+  "workdays": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "numberOfYears": 99,
+  "exclude": [],
+  "excludeHolidays": []
+}

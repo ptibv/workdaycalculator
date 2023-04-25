@@ -30,7 +30,7 @@ const generate = (config: ConfigInterface): CacheInterface => {
   while (now <= endDate) {
     workdays.dayToIndex[now.toISODate()] = i;
 
-    // determin the day and the string representation of the date
+    // determine the day and the string representation of the date
     if (
       !holidays.includes(now.toISODate()) // if is no holiday
       && config.workdays.includes(now.weekday) // and it is a workday of the week
