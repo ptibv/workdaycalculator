@@ -1,0 +1,13 @@
+{
+  "zone": "nl",
+  "workdays": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "numberOfYears": 99,
+  "exclude": [],
+  "excludeHolidays": []
+}

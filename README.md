@@ -3,11 +3,6 @@
 ## Introduction
 Application that allows you to define a configuration for specific usecases for the workday calculcator
 
-# TODO
- - Write the unit tests
- - Proper errors should be thrown on different errors
- - Generate swagger documentation
-
 # Startup actions
 On startup the application will try to find all the json configuration files from the .config directory and try to generate a cache file for it.
 
@@ -109,5 +104,5 @@ Calculates the next workday based ont he given date and the number of days we sh
 To run the application in Docker with persistence take the following steps:
 ```
 $ docker build -t workdaysapi .
-$ docker run -p 127.0.0.1:8181:8181 -v ${PWD}/.cache:/usr/src/app/.cache -v ${PWD}/.config:/usr/src/app/.cache workdaysapi 
+$ docker run -p 8181:8181 -v ${PWD}/cache:/cache -v ${PWD}/config:/config workdaysapi
 ```
