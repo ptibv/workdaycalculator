@@ -1,6 +1,7 @@
 import express from 'express';
 
 // business logic classes
+import * as process from 'process';
 import Workdays from './Workdays';
 import DiskCache from './DiskCache';
 import Config from './Config';
@@ -16,9 +17,9 @@ app.use(express.json());
 initializeSwagger(app);
 
 // Setup the application
-const cache = new DiskCache();
+const cache = new DiskCache(process.env.CACHE_DIR);
 const workdays = new Workdays(cache);
-const config = new Config(cache, workdays);
+const config = new Config(cache, workdays, process.env.CACHE_DIR);
 
 // regenerates all the configs and puts then in memory
 // and on disk if the config has changed

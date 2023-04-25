@@ -13,7 +13,7 @@ class Config extends IOBase {
 
   private cache: DiskCache;
 
-  constructor(cache: DiskCache, workdays: Workdays, baseDir = './.config') {
+  constructor(cache: DiskCache, workdays: Workdays, baseDir = '/config') {
     super(baseDir);
     this.workdays = workdays;
     this.cache = cache;

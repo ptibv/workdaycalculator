@@ -1,22 +1,10 @@
-FROM node:18-alpine as build
+FROM node:20-slim as build
 
 ADD . /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN npm ci && npm run build
-
-FROM node:18-alpine
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-RUN npm i -g husky \
-   && npm ci --omit=dev \
-   && mkdir .cache \
-   && mkdir .config
-
-COPY --from=build /usr/src/app/dist ./dist
+RUN npm ci && npm run build && npm prune --production
 
 EXPOSE 8181
 

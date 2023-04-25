@@ -7,7 +7,7 @@ import CacheNotFoundError from './errors/CacheNotFoundError';
 import CacheFileInterface from './interfaces/CacheFileInterface';
 
 class DiskCache extends IOBase {
-  constructor(baseDir: string = './.cache') {
+  constructor(baseDir: string = '/cache') {
     super(baseDir);
   }
 
