@@ -227,6 +227,15 @@ describe('e2e', () => {
       expect(response.body.status).toEqual('SUCCESS');
       expect(response.body.result).toEqual(expected);
     });
+
+    it('should return failed after trying to get a date outside of the cache', async () => {
+      const response = await request(app)
+        .get('/v1/nl/addWorkdays/1980-01-01/10')
+        .send();
+
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('1980-01-01T00:00:00.000Z was not found in the cache');
+    });
   });
 
   describe('GET /v1/:ref/config', () => {

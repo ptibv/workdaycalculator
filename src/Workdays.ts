@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import DiskCache from './DiskCache';
+import DateOutOfRangeError from './errors/DateOutOfRangeError';
 
 class Workdays {
   private configs:any;
@@ -64,6 +65,10 @@ class Workdays {
 
     // get the index
     const index = this.configs[this.getKey(ref)].dayToIndex[DateTime.fromJSDate(date).toFormat('yyyy-MM-dd')];
+
+    if (typeof index === 'undefined') {
+      throw new DateOutOfRangeError(`${date?.toISOString()} was not found in the cache`);
+    }
 
     return this.configs[this.getKey(ref)].days[index + workdaysToAdd];
   }
