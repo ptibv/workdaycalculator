@@ -6,6 +6,7 @@
     "start": "node dist/app.js",
     "start:local": "CACHE_DIR=cache COFNIG_DIR=config nodemon src/app.ts",
     "test": "jest",
+    "test:ci": "jest --coverage",
     "lint": "eslint",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "build": "tsc --project tsconfig-build.json",
