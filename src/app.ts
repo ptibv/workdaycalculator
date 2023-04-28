@@ -19,7 +19,7 @@ initializeSwagger(app);
 // Setup the application
 const cache = new DiskCache(process.env.CACHE_DIR);
 const workdays = new Workdays(cache);
-const config = new Config(cache, workdays, process.env.CACHE_DIR);
+const config = new Config(cache, workdays, process.env.CONFIG_DIR);
 
 // regenerates all the configs and puts then in memory
 // and on disk if the config has changed
