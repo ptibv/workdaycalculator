@@ -49,7 +49,7 @@ class Config extends IOBase {
     // everything
     try {
       fs.readdirSync(path.resolve(this.baseDir))
-        .filter((item) => item.substring(item.length - 5, item.length) === '.json')
+        .filter((item) => item.endsWith('.json'))
         .map((item) => item.substring(0, item.length - 5))
         .forEach((ref) => {
           const currentConfig = this.get(ref);
