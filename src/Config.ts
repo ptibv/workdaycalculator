@@ -43,10 +43,6 @@ class Config extends IOBase {
     }
 
     // If the config is not writable, we might still need to update the cache
-    this.updateCache(ref, config);
-  }
-
-  protected updateCache(ref: string, config: ConfigInterface): void {
     this.cache.write(ref, generate(config), config);
     this.workdays.flush(ref);
   }
