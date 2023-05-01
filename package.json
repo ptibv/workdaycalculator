@@ -1,6 +1,6 @@
 {
   "name": "@ptibv/workdaycalculator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "scripts": {
     "start": "node dist/app.js",
