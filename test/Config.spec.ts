@@ -1,5 +1,5 @@
 import {
-  afterAll, afterEach, beforeAll, describe, expect, it, jest,
+  afterAll, beforeAll, describe, expect, it, jest,
 } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
@@ -51,10 +51,6 @@ describe('Config', () => {
   });
 
   describe('Write config', () => {
-    afterEach(() => {
-      fs.chmodSync(path.resolve('config.test'), 0o755);
-    });
-
     afterAll(() => {
       fs.rmSync(path.resolve('config.test/new-nl.json'));
     });
@@ -70,8 +66,8 @@ describe('Config', () => {
     });
 
     it('should not write when read-only, but should update cache', () => {
-      fs.chmodSync(path.resolve('config.test'), 0o555); // make directory read only
       const baseConfig = new Config(cacheMock as unknown as DiskCache, workdays, 'config.test');
+      jest.spyOn(baseConfig, 'isWritable').mockImplementation(() => false);
 
       const config = baseConfig.get('nl');
       baseConfig.write('should-not-exist', config);

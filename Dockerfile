@@ -1,4 +1,4 @@
-FROM node:20-slim as build
+FROM node:20-slim
 
 ADD . /usr/src/app
 

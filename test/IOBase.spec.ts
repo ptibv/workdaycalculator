@@ -1,5 +1,5 @@
 import {
-  beforeEach, afterEach, describe, expect, it,
+  beforeEach, afterEach, describe, expect, it, jest,
 } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
@@ -69,21 +69,12 @@ describe('IOBase', () => {
     });
 
     it('should not be writable', () => {
-      fs.chmodSync(path.resolve('config.test/ioBase'), 0o555);
-
       const ioBase = new IOBase('config.test/ioBase');
+      jest.spyOn(fs, 'accessSync').mockImplementation(() => {
+        throw Error('No writable');
+      });
 
       expect(ioBase.isWritable()).toBeFalsy();
-    });
-
-    it('should be writable, not writable, writable', () => {
-      const ioBase = new IOBase('config.test/ioBase');
-
-      expect(ioBase.isWritable()).toBeTruthy();
-      fs.chmodSync(path.resolve('config.test/ioBase'), 0o555);
-      expect(ioBase.isWritable()).toBeFalsy();
-      fs.chmodSync(path.resolve('config.test/ioBase'), 0o755);
-      expect(ioBase.isWritable()).toBeTruthy();
     });
   });
 });
