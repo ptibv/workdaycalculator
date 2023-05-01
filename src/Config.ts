@@ -28,18 +28,25 @@ class Config extends IOBase {
 
       return JSON.parse(fs.readFileSync(jsonPath).toString());
     } catch (e) {
-      throw new ConfigNotFoundError(`The config for ref ${ref} could not be found`);
+      throw new ConfigNotFoundError(`The config for ref "${ref}" could not be found`);
     }
   }
 
   public write(ref: string, config: ConfigInterface): void {
-    const jsonPath = path.resolve(this.baseDir, `${ref}.json`);
+    if (this.isWritable()) {
+      const jsonPath = path.resolve(this.baseDir, `${ref}.json`);
 
-    // make sure we can only read from the given path
-    this.assertValidPath(jsonPath);
+      // make sure we can only read from the given path
+      this.assertValidPath(jsonPath);
 
-    fs.writeFileSync(jsonPath, JSON.stringify(config, null, 2));
+      fs.writeFileSync(jsonPath, JSON.stringify(config, null, 2));
+    }
 
+    // If the config is not writable, we might still need to update the cache
+    this.updateCache(ref, config);
+  }
+
+  protected updateCache(ref: string, config: ConfigInterface): void {
     this.cache.write(ref, generate(config), config);
     this.workdays.flush(ref);
   }
