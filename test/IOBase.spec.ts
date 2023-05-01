@@ -55,7 +55,7 @@ describe('IOBase', () => {
 
   describe('isWritable', () => {
     beforeEach(() => {
-      fs.mkdirSync(path.resolve('config.test/ioBase'));
+      fs.mkdirSync(path.resolve('config.test/ioBase'), { recursive: true });
     });
 
     afterEach(() => {
