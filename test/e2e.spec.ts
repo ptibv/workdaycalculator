@@ -145,6 +145,7 @@ describe('e2e', () => {
   let app: Express;
   const configReadMock = jest.fn();
   const configWriteMock = jest.fn();
+  const configIsWritable = jest.fn();
   const cacheGetMock = jest.fn();
   const cacheGetConfigMock = jest.fn();
 
@@ -154,6 +155,7 @@ describe('e2e', () => {
     const configMock = {
       get: configReadMock,
       write: configWriteMock,
+      isWritable: configIsWritable,
     };
     const cacheMock = {
       get: cacheGetMock,
@@ -270,12 +272,26 @@ describe('e2e', () => {
       { ref: 'nl', config: configsToTestWith.nl },
       { ref: 'be', config: configsToTestWith.be },
     ])('should return proper config for $ref', async ({ ref, config }: { ref: string, config: unknown }) => {
+      configIsWritable.mockImplementation(() => true);
       const response = await request(app)
         .put(`/v1/${ref}/config`)
         .send(config as unknown as object);
 
       expect(configWriteMock).toBeCalledWith(ref, config);
       expect(response.body.status).toEqual('SUCCESS');
+    });
+
+    it('should not write the config when baseDir is not writable', async () => {
+      const config = configsToTestWith.nl;
+      configIsWritable.mockImplementation(() => false);
+
+      const response = await request(app)
+        .put('/v1/nl/config')
+        .send(config as unknown as object);
+
+      expect(configWriteMock).not.toBeCalled();
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('Config is read-only');
     });
   });
 
@@ -290,6 +306,53 @@ describe('e2e', () => {
 
       expect(response.body.status).toEqual('SUCCESS');
       expect(response.body.result).toEqual(result);
+    });
+  });
+
+  describe('Validate error handling', () => {
+    it('Invalid workday request', async () => {
+      const response = await request(app)
+        .get('/v1/nl/isWorkday/invalid-date')
+        .send();
+
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('"date" must be a valid date');
+      expect(response.statusCode).toEqual(500);
+    });
+
+    it('Invalid put config request', async () => {
+      const config = configsToTestWith.nl;
+      configIsWritable.mockImplementation(() => {
+        throw Error('Error!');
+      });
+
+      const response = await request(app)
+        .put('/v1/nl/config')
+        .send(config as unknown as object);
+
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('Er is iets misgegaan');
+      expect(response.statusCode).toEqual(500);
+    });
+
+    it('Invalid zone request', async () => {
+      const response = await request(app)
+        .get('/v1/holidays/fr')
+        .send();
+
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('Zone fr not found');
+      expect(response.statusCode).toEqual(500);
+    });
+
+    it('should return a 404', async () => {
+      const response = await request(app)
+        .get('/invalid/path')
+        .send();
+
+      expect(response.body.status).toEqual('FAILED');
+      expect(response.body.error).toEqual('invalid endpoint');
+      expect(response.statusCode).toEqual(404);
     });
   });
 });

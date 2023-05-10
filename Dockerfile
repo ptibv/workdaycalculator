@@ -1,6 +1,8 @@
-FROM node:20-slim as build
+FROM node:20-slim
 
-ADD . /usr/src/app
+USER node
+
+ADD --chown=node:node . /usr/src/app
 
 WORKDIR /usr/src/app
 

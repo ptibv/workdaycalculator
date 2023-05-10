@@ -230,6 +230,10 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
    *                   type: string
    *                   description: Whether the call was successful or not
    *                   example: "SUCCESS"
+   *                 error:
+   *                   type: string
+   *                   description: Error message when request fails
+   *                   example: "Config is read-only"
    */
   app.put('/v1/:ref/config', async (req, res, next): Promise<void> => {
     try {
@@ -238,12 +242,19 @@ const registerRoutes = (app: Express, workdays: Workdays, config: Config) => {
         body: req.body,
       });
 
-      // write the body to the config file
-      config.write(ref, body);
+      if (config.isWritable()) {
+        // write the body to the config file
+        config.write(ref, body);
 
-      res.json({
-        status: 'SUCCESS',
-      });
+        res.json({
+          status: 'SUCCESS',
+        });
+      } else {
+        res.json({
+          status: 'FAILED',
+          error: 'Config is read-only',
+        });
+      }
     } catch (e) {
       next(e);
     }
