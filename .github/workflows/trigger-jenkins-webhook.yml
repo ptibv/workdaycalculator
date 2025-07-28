@@ -1,0 +1,15 @@
+name: Call Jenkins Workflow from the ptibv/ci repository
+
+on:
+  push:
+    branches:
+      - test
+  workflow_dispatch:
+
+jobs:
+  call-jenkins:
+    uses: ptibv/ci/.github/workflows/trigger-jenkins-webhook.yml@main
+    with:
+      JENKINS_JOB_NAME: ${{ vars.JENKINS_JOB_NAME }}
+      JENKINS_SERVER_BASE_URL: ${{ vars.JENKINS_SERVER_BASE_URL }}
+    secrets: inherit
