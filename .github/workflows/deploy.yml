@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches: [test]
+    paths-ignore: ['.github/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    uses: ptibv/ci/.github/workflows/deploy.yml@next
+    with:
+      environment: test
+      image-name: pti3/workdaycalculator
+      build-number-offset: ${{ vars.BUILD_NUMBER_OFFSET }}
+      version-bump: true
+      kube-context: rke-test3
+    secrets: inherit
